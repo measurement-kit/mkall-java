@@ -5,7 +5,6 @@ if [ "$JAVA_HOME" = "" ]; then
   exit 1
 fi
 
-CXXFLAGS=${CXXFLAGS:--Wall -Wextra -pedantic -Wmissing-prototypes -std=c++11}
 CPPFLAGS="$CPPFLAGS -I $JAVA_HOME/include"
 CPPFLAGS="$CPPFLAGS -I $JAVA_HOME/include/`uname -s|tr [A-Z] [a-z]`"
 CPPFLAGS="$CPPFLAGS -I ./src/mkall/headers"
