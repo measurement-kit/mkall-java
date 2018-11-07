@@ -1,0 +1,39 @@
+#!/bin/bash
+set -e
+if [ "$JAVA_HOME" = "" ]; then
+  echo "FATAL: you must set JAVA_HOME" 1>&2
+  exit 1
+fi
+
+CXXFLAGS=${CXXFLAGS:--Wall -Wextra -pedantic -Wmissing-prototypes -std=c++11}
+CPPFLAGS="$CPPFLAGS -I $JAVA_HOME/include"
+CPPFLAGS="$CPPFLAGS -I $JAVA_HOME/include/`uname -s|tr [A-Z] [a-z]`"
+CPPFLAGS="$CPPFLAGS -I ./src/mkall/headers"
+CPPFLAGS="$CPPFLAGS -D_FORTIFY_SOURCE=2"
+CXX=${CXX:-g++}
+CXXFLAGS="$CXXFLAGS -Wall"
+CXXFLAGS="$CXXFLAGS -Wextra"
+CXXFLAGS="$CXXFLAGS -pedantic"
+CXXFLAGS="$CXXFLAGS -Wmissing-prototypes"
+CXXFLAGS="$CXXFLAGS -std=c++11"
+CXXFLAGS="$CXXFLAGS -fno-common"
+CXXFLAGS="$CXXFLAGS -fPIC"
+CXXFLAGS="$CXXFLAGS -O2"
+CXXFLAGS="$CXXFLAGS -g"
+CXXFLAGS="$CXXFLAGS -fstack-protector-strong"
+LIBS=${LIBS:--lmeasurement_kit}
+
+compile() {
+  echo "* $CXX $@"
+  $CXX "$@"
+}
+
+objects=""
+for srcfile in src/mkall/cpp/*.cpp; do
+  objfile=`echo $srcfile | sed 's/\.cpp$/.o/g'`
+  compile $CPPFLAGS $CXXFLAGS -c $srcfile -o $objfile
+  objects="$objects $objfile"
+done
+
+soext=so || [[ "`uname -s`" = "Darwin" ]] && soext=dylib
+compile $LDFLAGS -shared -o libmkall.$soext $objects $LIBS

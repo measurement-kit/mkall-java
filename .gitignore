@@ -1,0 +1,11 @@
+*.class
+*.o
+/.orchestra.json
+/GeoLite2-ASN.tar.gz
+/GeoLite2-Country.tar.gz
+/asn.mmdb
+/cacert.pem
+/country.mmdb
+/libmkall.dylib
+/report-*-20??-??-??T??????Z-0.njson
+/src/mkall/headers/mkall.h

@@ -1,0 +1,32 @@
+#!/bin/sh
+set -e
+
+compile() {
+  echo "javac $@"
+  javac "$@"
+}
+
+run() {
+  echo "java $@"
+  java "$@"
+}
+
+runTest() {
+  file=$1
+  echo "=== TEST $file ==="
+  compile -Werror -cp src/main/java $file
+  clsname=`echo $file|sed -e 's/\.java//g' -e 's@src/test/java/@@'|tr '/' '.'`
+  clspath="src/main/java:src/test/java"
+  run -Djava.library.path=`pwd` -Xcheck:jni -cp $clspath $clsname
+  echo ""
+}
+
+if [ $# -eq 0 ]; then
+  for file in src/test/java/io/ooni/mk/*.java; do
+    runTest $file
+  done
+else
+  for file in "$@"; do
+    runTest $file
+  done
+fi

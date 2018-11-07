@@ -1,0 +1,9 @@
+#!/bin/sh
+set -e
+echo "* Generating JNI include headers"
+classes=""
+for name in `cd src/main/java && find io/ooni/mk -type f -name \*.class`; do
+  name=`echo $name | sed 's/\.class$//g' | tr '/' '.'`
+  classes="$name $classes"
+done
+javah -cp src/main/java -o src/mkall/headers/mkall.h $classes

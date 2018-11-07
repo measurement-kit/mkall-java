@@ -1,0 +1,4 @@
+#!/bin/sh
+set -e
+echo "* Compiling Java source code"
+javac -Werror -cp src/main/java src/main/java/io/ooni/mk/*.java
