@@ -4,12 +4,11 @@
 package io.ooni.mk;
 
 import io.ooni.mk.MKEvent;
-import io.ooni.mk.MKLibrary;
 import io.ooni.mk.MKTask;
 
 public class MKNDTTest {
     public static void main(String[] args) {
-        MKLibrary.load();
+        System.loadLibrary("mkall");
         String settings = new String();
         {
             settings += "{\n";

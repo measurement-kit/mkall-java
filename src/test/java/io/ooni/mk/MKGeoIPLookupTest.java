@@ -3,13 +3,12 @@
 // information on the copying conditions.
 package io.ooni.mk;
 
-import io.ooni.mk.MKLibrary;
 import io.ooni.mk.MKGeoIPLookupSettings;
 import io.ooni.mk.MKGeoIPLookupResults;
 
 public class MKGeoIPLookupTest {
     public static void main(String[] args) {
-        MKLibrary.load();
+        System.loadLibrary("mkall");
         MKGeoIPLookupSettings settings = new MKGeoIPLookupSettings();
         settings.setTimeout(14);
         settings.setCABundlePath("cacert.pem");

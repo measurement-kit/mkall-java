@@ -3,13 +3,12 @@
 // information on the copying conditions.
 package io.ooni.mk;
 
-import io.ooni.mk.MKLibrary;
 import io.ooni.mk.MKOrchestraClient;
 import io.ooni.mk.MKOrchestraResult;
 
 public class MKOrchestraTest {
     public static void main(String[] args) {
-        MKLibrary.load();
+        System.loadLibrary("mkall");
         MKOrchestraClient client = new MKOrchestraClient();
         client.setAvailableBandwidth("10110111");
         client.setDeviceToken("5f2c761f-2e98-43aa-b9ea-3d34cceaab15");

@@ -3,12 +3,11 @@
 // information on the copying conditions.
 package io.ooni.mk;
 
-import io.ooni.mk.MKLibrary;
 import io.ooni.mk.MKVersion;
 
 public class MKVersionTest {
     public static void main(String[] args) {
-        MKLibrary.load();
+        System.loadLibrary("mkall");
         System.out.println("Version: " + MKVersion.getVersion());
     }
 }
