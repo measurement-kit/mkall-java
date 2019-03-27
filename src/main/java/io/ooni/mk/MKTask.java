@@ -3,10 +3,11 @@
 // information on the copying conditions.
 package io.ooni.mk;
 
+/** MKTask is a task that Measurement Kit is running. */
 public class MKTask {
     long handle = 0;
 
-    final static native long StartNettest(String settings);
+    final static native long Start(String settings);
 
     final static native boolean IsDone(long handle);
 
@@ -20,26 +21,32 @@ public class MKTask {
         handle = n;
     }
 
-    public static MKTask startNettest(String settings) {
-        long handle = StartNettest(settings);
+    /** start starts a new task with the specified settings that must
+     * be a valid serialized JSON string. */
+    public static MKTask start(String settings) {
+        long handle = Start(settings);
         if (handle == 0) {
-            throw new RuntimeException("MKTask.startNettest failed");
+            throw new RuntimeException("MKTask.start failed");
         }
         return new MKTask(handle);
     }
 
+    /** isDone returns true when the task is done. */
     public boolean isDone() {
         return IsDone(handle);
     }
 
-    public MKEvent waitForNextEvent() {
+    /** waitForNextEvent blocks until the task generates the next event
+     * and then returns such events as a serialized JSON. */
+    public String waitForNextEvent() {
         long event = WaitForNextEvent(handle);
         if (event == 0) {
             throw new RuntimeException("MKTask.WaitForNextEvent failed");
         }
-        return new MKEvent(event);
+        return new MKEvent(event).serialize();
     }
 
+    /** interrupt interrupts the task. */
     public void interrupt() {
         Interrupt(handle);
     }

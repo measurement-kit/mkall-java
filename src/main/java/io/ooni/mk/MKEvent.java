@@ -3,7 +3,7 @@
 // information on the copying conditions.
 package io.ooni.mk;
 
-public class MKEvent {
+class MKEvent {
     long handle = 0;
 
     final static native String Serialize(long handle);

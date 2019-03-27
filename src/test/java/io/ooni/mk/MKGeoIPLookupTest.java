@@ -15,13 +15,11 @@ public class MKGeoIPLookupTest {
         settings.setCountryDBPath("country.mmdb");
         settings.setASNDBPath("asn.mmdb");
         MKGeoIPLookupResults results = settings.perform();
-        System.out.println("Good      : " + results.good());
-        System.out.println("Bytes sent: " + results.getBytesSent());
-        System.out.println("Bytes recv: " + results.getBytesRecv());
+        System.out.println("Good      : " + results.isGood());
         System.out.println("Probe IP  : " + results.getProbeIP());
         System.out.println("Probe ASN : " + results.getProbeASN());
         System.out.println("Probe CC  : " + results.getProbeCC());
         System.out.println("Probe Org : " + results.getProbeOrg());
-        System.out.print(new String(results.getLogs()));
+        System.out.print(results.getLogs());
     }
 }
