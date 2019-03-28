@@ -8,6 +8,6 @@ import io.ooni.mk.MKVersion;
 public class MKVersionTest {
     public static void main(String[] args) {
         System.loadLibrary("mkall");
-        System.out.println("Version: " + MKVersion.getVersion());
+        System.out.println("Version: " + MKVersion.getVersionMK());
     }
 }

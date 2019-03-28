@@ -3,28 +3,31 @@
 // and LICENSE for more information on the copying conditions.
 package io.ooni.mk;
 
-public class MKOrchestraResult {
+/** MKOrchestraResults contains the results of an orchestra operation. */
+public class MKOrchestraResults {
     long handle = 0;
 
     final static native boolean Good(long handle);
 
-    final static native byte[] GetBinaryLogs(long handle);
+    final static native String GetLogs(long handle);
 
     final static native void Delete(long handle);
 
-    protected MKOrchestraResult(long n) {
+    MKOrchestraResults(long n) {
         handle = n;
     }
 
-    public boolean good() {
+    /** isGood indicates whether we succeeded. */
+    public boolean isGood() {
         return Good(handle);
     }
 
-    public byte[] getBinaryLogs() {
-        return GetBinaryLogs(handle);
+    /** getLogs returns the logs as one or more UTF-8 lines of text. */
+    public String getLogs() {
+        return GetLogs(handle);
     }
 
     @Override public synchronized void finalize() {
-    Delete(handle);
+        Delete(handle);
     }
 }

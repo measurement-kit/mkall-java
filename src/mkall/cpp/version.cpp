@@ -9,6 +9,6 @@
 #include "mkall_util.h"
 
 JNIEXPORT jstring JNICALL
-Java_io_ooni_mk_MKVersion_getVersion(JNIEnv *env, jclass) {
+Java_io_ooni_mk_MKVersion_getVersionMK(JNIEnv *env, jclass) {
   return env->NewStringUTF(MK_VERSION);
 }

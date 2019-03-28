@@ -3,6 +3,8 @@
 // information on the copying conditions.
 package io.ooni.mk;
 
+/** MKVersion allows to get version information. */
 public class MKVersion {
-    public final static native String getVersion();
+    /** getVersionMK returns Measurement Kit version as a string. */
+    public final static native String getVersionMK();
 }

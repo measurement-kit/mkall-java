@@ -4,7 +4,9 @@
 #ifndef SRC_MKALL_HEADERS_MKALL_UTIL_H
 #define SRC_MKALL_HEADERS_MKALL_UTIL_H
 
-#include <iostream>
+#include <sstream>
+
+#include <measurement_kit/internal/vendor/mkdata.hpp>
 
 /// MKALL_THROW_RUNTIME_EXCEPTION throws a runtime exception.
 #define MKALL_THROW_RUNTIME_EXCEPTION(text)                    \
@@ -23,10 +25,14 @@
 #define MKALL_THROW_EINTERNAL MKALL_THROW_RUNTIME_EXCEPTION("Internal error")
 
 /// MKALL_CALL calls a void method of a type.
-#define MKALL_CALL(java_func, cxx_func, cxx_type)                   \
-  JNIEXPORT void JNICALL                                            \
-      Java_io_ooni_mk_##java_func(JNIEnv *, jclass, jlong handle) { \
-    cxx_func((cxx_type *)handle);                                   \
+#define MKALL_CALL(java_func, cxx_func, cxx_type)                      \
+  JNIEXPORT void JNICALL                                               \
+      Java_io_ooni_mk_##java_func(JNIEnv *env, jclass, jlong handle) { \
+    if (handle == 0) {                                                 \
+      MKALL_THROW_EINVAL;                                              \
+      return;                                                          \
+    }                                                                  \
+    cxx_func((cxx_type *)handle);                                      \
   }
 
 /// MKALL_DELETE defines a JNI deleter for the specified type.
@@ -43,31 +49,6 @@
     return cxx_func((cxx_type *)handle) ? JNI_TRUE : JNI_FALSE;        \
   }
 
-/// MKALL_GET_BYTE_ARRAY returns a byte array.
-#define MKALL_GET_BYTE_ARRAY(java_func, cxx_func, cxx_type)               \
-  JNIEXPORT jbyteArray JNICALL                                            \
-      Java_io_ooni_mk_##java_func(JNIEnv *env, jclass, jlong handle) {    \
-    if (handle == 0) {                                                    \
-      MKALL_THROW_EINVAL;                                                 \
-      return nullptr;                                                     \
-    }                                                                     \
-    const uint8_t *base = nullptr;                                        \
-    size_t count = 0;                                                     \
-    /* Implementation note: both in Java and Android jsize is jint */     \
-    cxx_func((cxx_type *)handle, &base, &count);                          \
-    if (base == nullptr || count <= 0 || count > INT_MAX) {               \
-      MKALL_THROW_EINTERNAL;                                              \
-      return nullptr;                                                     \
-    }                                                                     \
-    jbyteArray array = env->NewByteArray((jsize)count);                   \
-    if (array == nullptr) {                                               \
-      /* Exception should already be pending. */                          \
-      return nullptr;                                                     \
-    }                                                                     \
-    env->SetByteArrayRegion(array, 0, (jsize)count, (const jbyte *)base); \
-    return array;                                                         \
-  }
-
 /// MKALL_GET_DOUBLE returns a double value.
 #define MKALL_GET_DOUBLE(java_func, cxx_func, cxx_type)                \
   JNIEXPORT jdouble JNICALL                                            \
@@ -77,6 +58,56 @@
       return 0.0;                                                      \
     }                                                                  \
     return cxx_func((cxx_type *)handle);                               \
+  }
+
+/// MKALL_GET_LOGS returns the logs as a UTF-8 string
+#define MKALL_GET_LOGS(java_func, cxx_func_size, cxx_func_at, cxx_type) \
+  JNIEXPORT jstring JNICALL                                             \
+      Java_io_ooni_mk_##java_func(JNIEnv *env, jclass, jlong handle) {  \
+    if (handle == 0) {                                                  \
+      MKALL_THROW_EINVAL;                                               \
+      return nullptr;                                                   \
+    }                                                                   \
+    std::stringstream ss;                                               \
+    size_t n = cxx_func_size((cxx_type *)handle);                       \
+    for (size_t i = 0; i < n; ++i) {                                    \
+      const char *s = cxx_func_at((cxx_type *)handle, i);               \
+      if (s == nullptr) {                                               \
+        MKALL_THROW_EINVAL;                                             \
+        return nullptr;                                                 \
+      }                                                                 \
+      std::string str = s;                                              \
+      if (!mk::data::contains_valid_utf8(str)) {                        \
+        str = mk::data::base64_encode(std::move(str));                  \
+      }                                                                 \
+      ss << s << std::endl;                                             \
+    }                                                                   \
+    return env->NewStringUTF(ss.str().c_str());                         \
+  }
+
+/// MKALL_GET_LOGS_FROM_BINARY_ARRAY returns the logs as either a
+/// sequence of lines or a single base64 blob, depending on whether
+/// the input binary array is UTF-8 or not.
+#define MKALL_GET_LOGS_FROM_BINARY_ARRAY(java_func, cxx_func, cxx_type) \
+  JNIEXPORT jstring JNICALL                                             \
+      Java_io_ooni_mk_##java_func(JNIEnv *env, jclass, jlong handle) {  \
+    if (handle == 0) {                                                  \
+      MKALL_THROW_EINVAL;                                               \
+      return nullptr;                                                   \
+    }                                                                   \
+    const uint8_t *base = nullptr;                                      \
+    size_t count = 0;                                                   \
+    /* Implementation note: both in Java and Android jsize is jint */   \
+    cxx_func((cxx_type *)handle, &base, &count);                        \
+    if (base == nullptr || count <= 0 || count > INT_MAX) {             \
+      MKALL_THROW_EINTERNAL;                                            \
+      return nullptr;                                                   \
+    }                                                                   \
+    std::string str{(const char *)base, count};                         \
+    if (!mk::data::contains_valid_utf8(str)) {                          \
+      str = mk::data::base64_encode(std::move(str));                    \
+    }                                                                   \
+    return env->NewStringUTF(str.c_str());                              \
   }
 
 /// MKALL_GET_LONG returns a long value.

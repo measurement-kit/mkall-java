@@ -10,7 +10,7 @@
 
 #include "mkall_util.h"
 
-MKALL_NEW_WITH_STRING_ARGUMENT(MKTask_StartNettest, mk_nettest_start)
+MKALL_NEW_WITH_STRING_ARGUMENT(MKTask_Start, mk_task_start)
 
 MKALL_GET_BOOLEAN(MKTask_IsDone, mk_task_is_done, mk_task_t)
 

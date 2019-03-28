@@ -6,68 +6,61 @@
 
 #include <limits.h>
 
-#include <measurement_kit/vendor/mkgeoip.h>
+#include <measurement_kit/internal/geoiplookup/geoiplookup.h>
 
 #include "mkall_util.h"
 
 MKALL_GET_BOOLEAN(MKGeoIPLookupResults_Good,
-                  mkgeoip_lookup_results_good_v2,
-                  mkgeoip_lookup_results_t)
-
-MKALL_GET_DOUBLE(MKGeoIPLookupResults_GetBytesSent,
-                 mkgeoip_lookup_results_get_bytes_sent_v2,
-                 mkgeoip_lookup_results_t)
-
-MKALL_GET_DOUBLE(MKGeoIPLookupResults_GetBytesRecv,
-                 mkgeoip_lookup_results_get_bytes_recv_v2,
-                 mkgeoip_lookup_results_t)
+                  mk_geoiplookup_response_good,
+                  mk_geoiplookup_response_t)
 
 MKALL_GET_STRING(MKGeoIPLookupResults_GetProbeIP,
-                 mkgeoip_lookup_results_get_probe_ip_v2,
-                 mkgeoip_lookup_results_t)
+                 mk_geoiplookup_response_ip,
+                 mk_geoiplookup_response_t)
 
-MKALL_GET_LONG(MKGeoIPLookupResults_GetProbeASN,
-               mkgeoip_lookup_results_get_probe_asn_v2,
-               mkgeoip_lookup_results_t)
+MKALL_GET_STRING(MKGeoIPLookupResults_GetProbeASN,
+                 mk_geoiplookup_response_asn,
+                 mk_geoiplookup_response_t)
 
 MKALL_GET_STRING(MKGeoIPLookupResults_GetProbeCC,
-                 mkgeoip_lookup_results_get_probe_cc_v2,
-                 mkgeoip_lookup_results_t)
+                 mk_geoiplookup_response_cc,
+                 mk_geoiplookup_response_t)
 
 MKALL_GET_STRING(MKGeoIPLookupResults_GetProbeOrg,
-                 mkgeoip_lookup_results_get_probe_org_v2,
-                 mkgeoip_lookup_results_t)
+                 mk_geoiplookup_response_org,
+                 mk_geoiplookup_response_t)
 
-MKALL_GET_BYTE_ARRAY(MKGeoIPLookupResults_GetLogs,
-                     mkgeoip_lookup_results_get_logs_binary_v2,
-                     mkgeoip_lookup_results_t)
+MKALL_GET_LOGS(MKGeoIPLookupResults_GetLogs,
+               mk_geoiplookup_response_logs_size,
+               mk_geoiplookup_response_logs_at,
+               mk_geoiplookup_response_t)
 
 MKALL_DELETE(MKGeoIPLookupResults_Delete,
-             mkgeoip_lookup_results_delete,
-             mkgeoip_lookup_results_t)
+             mk_geoiplookup_response_delete,
+             mk_geoiplookup_response_t)
 
-MKALL_NEW(MKGeoIPLookupSettings_New, mkgeoip_lookup_settings_new_nonnull)
+MKALL_NEW(MKGeoIPLookupSettings_New, mk_geoiplookup_request_new)
 
 MKALL_SET_LONG(MKGeoIPLookupSettings_SetTimeout,
-               mkgeoip_lookup_settings_set_timeout_v2,
-               mkgeoip_lookup_settings_t)
+               mk_geoiplookup_request_set_timeout,
+               mk_geoiplookup_request_t)
 
 MKALL_SET_STRING(MKGeoIPLookupSettings_SetCountryDBPath,
-                 mkgeoip_lookup_settings_set_country_db_path_v2,
-                 mkgeoip_lookup_settings_t)
+                 mk_geoiplookup_request_set_country_db_path,
+                 mk_geoiplookup_request_t)
 
 MKALL_SET_STRING(MKGeoIPLookupSettings_SetASNDBPath,
-                 mkgeoip_lookup_settings_set_asn_db_path_v2,
-                 mkgeoip_lookup_settings_t)
+                 mk_geoiplookup_request_set_asn_db_path,
+                 mk_geoiplookup_request_t)
 
 MKALL_SET_STRING(MKGeoIPLookupSettings_SetCABundlePath,
-                 mkgeoip_lookup_settings_set_ca_bundle_path_v2,
-                 mkgeoip_lookup_settings_t)
+                 mk_geoiplookup_request_set_ca_bundle_path,
+                 mk_geoiplookup_request_t)
 
 MKALL_GET_POINTER(MKGeoIPLookupSettings_Perform,
-                  mkgeoip_lookup_settings_perform_nonnull,
-                  mkgeoip_lookup_settings_t)
+                  mk_geoiplookup_perform,
+                  mk_geoiplookup_request_t)
 
 MKALL_DELETE(MKGeoIPLookupSettings_Delete,
-             mkgeoip_lookup_settings_delete,
-             mkgeoip_lookup_settings_t)
+             mk_geoiplookup_request_delete,
+             mk_geoiplookup_request_t)

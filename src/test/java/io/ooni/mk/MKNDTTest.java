@@ -21,10 +21,10 @@ public class MKNDTTest {
             settings += "  }\n";
             settings += "}\n";
         }
-        MKTask task = MKTask.startNettest(settings);
+        MKTask task = MKTask.start(settings);
         while (!task.isDone()) {
-            MKEvent event = task.waitForNextEvent();
-            System.out.println(event.serialize());
+            String event = task.waitForNextEvent();
+            System.out.println(event);
         }
     }
 }

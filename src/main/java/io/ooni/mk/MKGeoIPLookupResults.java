@@ -3,60 +3,56 @@
 // and LICENSE for more information on the copying conditions.
 package io.ooni.mk;
 
+/** MKGeoIPLookupResults contains the results of a GeoIP lookup. */
 public class MKGeoIPLookupResults {
     long handle = 0;
 
     final static native boolean Good(long handle);
 
-    final static native double GetBytesSent(long handle);
-
-    final static native double GetBytesRecv(long handle);
-
     final static native String GetProbeIP(long handle);
 
-    final static native long GetProbeASN(long handle);
+    final static native String GetProbeASN(long handle);
 
     final static native String GetProbeCC(long handle);
 
     final static native String GetProbeOrg(long handle);
 
-    final static native byte[] GetLogs(long handle);
+    final static native String GetLogs(long handle);
 
     final static native void Delete(long handle);
 
-    protected MKGeoIPLookupResults(long n) {
+    MKGeoIPLookupResults(long n) {
         handle = n;
     }
 
-    public boolean good() {
+    /** isGood returns whether we succeded. */
+    public boolean isGood() {
         return Good(handle);
     }
 
-    public double getBytesSent() {
-        return GetBytesSent(handle);
-    }
-
-    public double getBytesRecv() {
-        return GetBytesRecv(handle);
-    }
-
+    /** getProbeIP returns the probe IP. */
     public String getProbeIP() {
         return GetProbeIP(handle);
     }
 
-    public long getProbeASN() {
+    /** getProbeASN returns the probe ASN. */
+    public String getProbeASN() {
         return GetProbeASN(handle);
     }
 
+    /** getProbeCC returns the probe CC. */
     public String getProbeCC() {
         return GetProbeCC(handle);
     }
 
+    /** getProbeOrg returns the probe ASN organization. */
     public String getProbeOrg() {
         return GetProbeOrg(handle);
     }
 
-    public byte[] getLogs() {
+    /** getLogs returns the logs as one or more newline separated
+     * lines containing only UTF-8 characters. */
+    public String getLogs() {
         return GetLogs(handle);
     }
 

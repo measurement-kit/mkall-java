@@ -3,43 +3,43 @@
 // information on the copying conditions.
 package io.ooni.mk;
 
-import io.ooni.mk.MKOrchestraClient;
-import io.ooni.mk.MKOrchestraResult;
+import io.ooni.mk.MKOrchestraSettings;
+import io.ooni.mk.MKOrchestraResults;
 
 public class MKOrchestraTest {
     public static void main(String[] args) {
         System.loadLibrary("mkall");
-        MKOrchestraClient client = new MKOrchestraClient();
-        client.setAvailableBandwidth("10110111");
-        client.setDeviceToken("5f2c761f-2e98-43aa-b9ea-3d34cceaab15");
-        client.setCABundlePath("cacert.pem");
-        client.setGeoIPCountryPath("country.mmdb");
-        client.setGeoIPASNPath("asn.mmdb");
-        client.setLanguage("it_IT");
-        client.setNetworkType("wifi");
-        client.setPlatform("macos");
+        MKOrchestraSettings settings = new MKOrchestraSettings();
+        settings.setAvailableBandwidth("10110111");
+        settings.setDeviceToken("5f2c761f-2e98-43aa-b9ea-3d34cceaab15");
+        settings.setCABundlePath("cacert.pem");
+        settings.setGeoIPCountryPath("country.mmdb");
+        settings.setGeoIPASNPath("asn.mmdb");
+        settings.setLanguage("it_IT");
+        settings.setNetworkType("wifi");
+        settings.setPlatform("macos");
         // Disabled so that the library will need to guess them
-        //client.setProbeASN("AS30722");
-        //client.setProbeCC("IT");
-        client.setProbeFamily("sbs");
-        client.setProbeTimezone("Europe/Rome");
-        client.setRegistryURL("https://registry.proteus.test.ooni.io");
-        client.setSecretsFile(".orchestra.json");
-        client.setSoftwareName("mkall-java");
-        client.setSoftwareVersion("0.1.0");
-        client.addSupportedTest("web_connectivity");
-        client.addSupportedTest("ndt");
-        client.setTimeout(14);
+        //settings.setProbeASN("AS30722");
+        //settings.setProbeCC("IT");
+        settings.setProbeFamily("sbs");
+        settings.setProbeTimezone("Europe/Rome");
+        settings.setRegistryURL("https://registry.proteus.test.ooni.io");
+        settings.setSecretsFile(".orchestra.json");
+        settings.setSoftwareName("mkall-java");
+        settings.setSoftwareVersion("0.1.0");
+        settings.addSupportedTest("web_connectivity");
+        settings.addSupportedTest("ndt");
+        settings.setTimeout(14);
         {
-            MKOrchestraResult result = client.sync();
-            System.out.println("Good      : " + result.good());
-            System.out.print(new String(result.getBinaryLogs()));
+            MKOrchestraResults results = settings.updateOrRegister();
+            System.out.println("Good      : " + results.isGood());
+            System.out.print(results.getLogs());
         }
-        client.setNetworkType("mobile");
+        settings.setNetworkType("mobile");
         {
-            MKOrchestraResult result = client.sync();
-            System.out.println("Good      : " + result.good());
-            System.out.print(new String(result.getBinaryLogs()));
+            MKOrchestraResults results = settings.updateOrRegister();
+            System.out.println("Good      : " + results.isGood());
+            System.out.print(results.getLogs());
         }
     }
 }
