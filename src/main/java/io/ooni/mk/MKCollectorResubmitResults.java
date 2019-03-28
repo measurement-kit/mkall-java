@@ -27,7 +27,7 @@ public class MKCollectorResubmitResults {
 
     /** getUpdatedSerializedMeasurement returns the serialized measurement
      * where all the fields that should have been updated, e.g., the
-     * report ID, have already been updated  with the new values provided
+     * report ID, have already been updated with the new values provided
      * by the OONI collector as part of resubmitting. */
     public String getUpdatedSerializedMeasurement() {
         return Content(handle);

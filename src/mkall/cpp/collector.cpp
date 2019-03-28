@@ -4,7 +4,6 @@
 
 #include "mkall.h"
 
-// We should use collector.h from MK v0.10.1 onwards
 #include <measurement_kit/internal/collector/collector.h>
 
 #include "mkall_util.h"
