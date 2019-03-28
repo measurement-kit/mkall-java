@@ -25,10 +25,14 @@
 #define MKALL_THROW_EINTERNAL MKALL_THROW_RUNTIME_EXCEPTION("Internal error")
 
 /// MKALL_CALL calls a void method of a type.
-#define MKALL_CALL(java_func, cxx_func, cxx_type)                   \
-  JNIEXPORT void JNICALL                                            \
-      Java_io_ooni_mk_##java_func(JNIEnv *, jclass, jlong handle) { \
-    cxx_func((cxx_type *)handle);                                   \
+#define MKALL_CALL(java_func, cxx_func, cxx_type)                      \
+  JNIEXPORT void JNICALL                                               \
+      Java_io_ooni_mk_##java_func(JNIEnv *env, jclass, jlong handle) { \
+    if (handle == 0) {                                                 \
+      MKALL_THROW_EINVAL;                                              \
+      return;                                                          \
+    }                                                                  \
+    cxx_func((cxx_type *)handle);                                      \
   }
 
 /// MKALL_DELETE defines a JNI deleter for the specified type.
