@@ -12,6 +12,8 @@ public class MKCollectorResubmitResults {
 
     final static native String Content(long handle);
 
+    final static native String ReportID(long handle);
+
     final static native String Logs(long handle);
 
     final static native void Delete(long handle);
@@ -31,6 +33,11 @@ public class MKCollectorResubmitResults {
      * by the OONI collector as part of resubmitting. */
     public String getUpdatedSerializedMeasurement() {
         return Content(handle);
+    }
+
+    /** getUpdatedReportID returns the updated report ID. */
+    public String getUpdatedReportID() {
+        return ReportID(handle);
     }
 
     /** getLogs returns the logs as one-or-more newline-separated

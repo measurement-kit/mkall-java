@@ -33,6 +33,7 @@ public class MKCollectorResubmitTest {
         MKCollectorResubmitResults results = settings.perform();
         System.out.println("Good         : " + results.isGood());
         System.out.println("Measurement  : " + results.getUpdatedSerializedMeasurement());
+        System.out.println("Report ID    : " + results.getUpdatedReportID());
         System.out.print(results.getLogs());
     }
 }

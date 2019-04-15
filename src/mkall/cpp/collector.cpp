@@ -16,6 +16,10 @@ MKALL_GET_STRING(MKCollectorResubmitResults_Content,
                  mk_collector_resubmit_response_content,
                  mk_collector_resubmit_response_t)
 
+MKALL_GET_STRING(MKCollectorResubmitResults_ReportID,
+                 mk_collector_resubmit_response_report_id,
+                 mk_collector_resubmit_response_t)
+
 MKALL_GET_LOGS(MKCollectorResubmitResults_Logs,
                mk_collector_resubmit_response_logs_size,
                mk_collector_resubmit_response_logs_at,
