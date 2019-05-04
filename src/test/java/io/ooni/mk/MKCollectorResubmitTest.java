@@ -24,16 +24,31 @@ public class MKCollectorResubmitTest {
             "\"test_version\": \"0.0.1\"\n" +
         "}\n";
 
+    static boolean submit(MKCollectorResubmitSettings settings) {
+        MKCollectorResubmitResults results = settings.perform();
+        System.out.println("Good         : " + results.isGood());
+        System.out.println("Measurement  : " + results.getUpdatedSerializedMeasurement());
+        System.out.println("Report ID    : " + results.getUpdatedReportID());
+        System.out.print(results.getLogs());
+        return results.isGood();
+    }
+
     public static void main(String[] args) {
         System.loadLibrary("mkall");
         MKCollectorResubmitSettings settings = new MKCollectorResubmitSettings();
         settings.setTimeout(14);
         settings.setCABundlePath("cacert.pem");
         settings.setSerializedMeasurement(origMeasurement);
-        MKCollectorResubmitResults results = settings.perform();
-        System.out.println("Good         : " + results.isGood());
-        System.out.println("Measurement  : " + results.getUpdatedSerializedMeasurement());
-        System.out.println("Report ID    : " + results.getUpdatedReportID());
-        System.out.print(results.getLogs());
+        settings.setSoftwareName("ooniprobe-android");
+        // Should fail
+        settings.setSoftwareVersion("2.0.0");
+        if (submit(settings) == true) {
+            System.exit(1);
+        }
+        // Retry
+        settings.setSoftwareVersion("2.0.1");
+        if (submit(settings) == false) {
+            System.exit(1);
+        }
     }
 }

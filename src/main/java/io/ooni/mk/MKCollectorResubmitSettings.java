@@ -16,6 +16,10 @@ public class MKCollectorResubmitSettings {
 
     final static native void SetContent(long handle, String content);
 
+    final static native void SetSoftwareName(long handle, String name);
+
+    final static native void SetSoftwareVersion(long handle, String version);
+
     final static native long Perform(long handle);
 
     final static native void Delete(long handle);
@@ -44,6 +48,16 @@ public class MKCollectorResubmitSettings {
      * you want to resubmit to the OONI collector. */
     public void setSerializedMeasurement(String measurement) {
         SetContent(handle, measurement);
+    }
+
+    /** setSoftwareName sets the name of the app submitting the report. */
+    public void setSoftwareName(String name) {
+        SetSoftwareName(handle, name);
+    }
+
+    /** setSoftwareVersion sets the version of the app submitting the report. */
+    public void setSoftwareVersion(String version) {
+        SetSoftwareVersion(handle, version);
     }
 
     @Override public synchronized void finalize() {

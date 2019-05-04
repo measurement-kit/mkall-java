@@ -43,6 +43,14 @@ MKALL_SET_STRING(MKCollectorResubmitSettings_SetContent,
                  mk_collector_resubmit_request_set_content,
                  mk_collector_resubmit_request_t)
 
+MKALL_SET_STRING(MKCollectorResubmitSettings_SetSoftwareName,
+                 mk_collector_resubmit_request_set_software_name,
+                 mk_collector_resubmit_request_t)
+
+MKALL_SET_STRING(MKCollectorResubmitSettings_SetSoftwareVersion,
+                 mk_collector_resubmit_request_set_software_version,
+                 mk_collector_resubmit_request_t)
+
 MKALL_GET_POINTER(MKCollectorResubmitSettings_Perform,
                   mk_collector_resubmit,
                   mk_collector_resubmit_request_t)
