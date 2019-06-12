@@ -1,5 +1,8 @@
 # Measurement Kit Java JNI bindings
 
+⚠️⚠️⚠️⚠️⚠️⚠️⚠️: This repository is now unused. All the relevant changes have
+been integrated into measurement-kit/android-libs.
+
 This is experimental code, use at your own risk. We mainly use this code
 to more easily debug JNI issues on Android. Our focus is Android.
 
